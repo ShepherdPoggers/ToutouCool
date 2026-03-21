@@ -3,7 +3,7 @@
 
 Servo servoToutou; // Permet de gérer le servo dans le code.
 
-int pos = 0;
+int pos = 50;
 
 void setup() {
   servoToutou.attach(9);
@@ -11,14 +11,15 @@ void setup() {
 }
 
 void loop() {
-  for(pos; pos <= 180; pos++) // effectue une rotation de 
+
+  for(pos; pos <= 140; pos++) // effectue une rotation de 
   {
     Serial.print("Rotation : ");
     Serial.println(pos);
     servoToutou.write(pos);
     delay(15);
   }
-  for (pos; pos >= 0; pos--)
+  for (pos; pos >= 50; pos--)
   {
     Serial.print("Rotation : ");
     Serial.println(pos);
@@ -26,3 +27,4 @@ void loop() {
     delay(15);
   }
 }
+
