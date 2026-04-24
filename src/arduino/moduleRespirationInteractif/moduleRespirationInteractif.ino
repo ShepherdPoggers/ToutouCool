@@ -29,6 +29,7 @@ int buttonState = 0;
 
 // L'état du tilt
 int tiltState = 0;
+int lastTilt = 0;
 
 int potVal = 0;
 int lastPotVal = 0;
@@ -67,8 +68,9 @@ void boutonEcoute()
 void tiltEcoute()
 {
   tiltState = digitalRead(tiltPin);
-  if(tiltState == LOW)
+  if(tiltState != lastTilt)
   {
+    lastTilt = tiltState;
     if((servoDelay - stress) > minDelay)
     {
       servoDelay -= stress;
@@ -85,7 +87,7 @@ void retablissement()
     {
       servoDelay += 0.1;
       Serial.print("ServoDelay = ");
-      Serial.print(servoDelay);
+      Serial.println(servoDelay);
 
     }
 }
@@ -112,25 +114,31 @@ void loop()
 
   if(state)
   {
-    for(pos; pos <= 180; pos++) // effectue une rotation de 
+    for (pos; pos >= angle2; pos--)
     {
       servoToutou.write(pos);
       boutonEcoute();
       //potEcoute();
       tiltEcoute();
+      //Serial.print("Angle de rotation = ");
+      //Serial.println(pos);
+      delay(servoDelay);
+    }
+    
+    retablissement();
+    
+    for(pos; pos <= angle1; pos++) // effectue une rotation de 
+    {
+      servoToutou.write(pos);
+      boutonEcoute();
+      //potEcoute();
+      tiltEcoute();
+      //Serial.print("Angle de rotation = ");
+      //Serial.println(pos);
       delay(servoDelay);
       
     }
-    retablissement();
     
-    for (pos; pos >= 0; pos--)
-    {
-      servoToutou.write(pos);
-      boutonEcoute();
-      //potEcoute();
-      tiltEcoute();
-      delay(servoDelay);
-    }
     retablissement();
   }
   else
