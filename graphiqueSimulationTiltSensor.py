@@ -34,29 +34,29 @@ for t in times:
             if (servoDelay - stress) > minDelay:
                 servoDelay -= stress
 
-            respiration = (360 * servoDelay) / 1000
+            respiration = ((360 * servoDelay) / 1000) ** (-1)
             tilt_triggered_times.append(t)
             tilt_triggered_values.append(respiration)
 
     if servoDelay < maxDelay:
         servoDelay += recovery_rate
 
-    respiration = (360 * servoDelay) / 1000
+    respiration = ((360 * servoDelay) / 1000)** (-1)
     respiration_times.append(respiration)
 
 # ================== STYLE (TEXTE x2) ==================
 plt.figure(figsize=(12, 6))
 
 plt.plot(times, respiration_times, linewidth=2.5,
-         label="Secondes / respiration")
+         label="Respirations / Seconde")
 
 plt.scatter(tilt_triggered_times, tilt_triggered_values,
             s=60,  # points plus gros
-            label="Activation tilt", zorder=3, color='red')
+            label="Détection d'une secousse", zorder=3, color='red')
 
 plt.xlabel("Temps (s)", fontsize=18)
-plt.ylabel("Secondes / respiration", fontsize=18)
-plt.title("Simulation avec séquences de tilt chevauchées", fontsize=20)
+plt.ylabel("Respirations / Seconde", fontsize=18)
+plt.title("Simulation de la respiration avec des secousses", fontsize=20)
 
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
